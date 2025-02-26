@@ -49,7 +49,7 @@ app.get("/download", (req, res) => {
     // For video: build format selection using the parsed quality
     const height = parseInt(quality, 10);
     const formatSelection = `bestvideo[height<=${height}]+bestaudio/best`;
-    command = `yt-dlp -f "${formatSelection}" -o "${outputFilePath}" "${videoUrl}"`;
+    command = `yt-dlp --cookies-from-browser chrome -f "${formatSelection}" -o "${outputFilePath}" "${videoUrl}"`;
   }
 
   console.log("Running command:", command);
