@@ -6,7 +6,8 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
-
+let downloadableFile;
+let finalFilePath;
 app.get("/download", (req, res) => {
   const videoUrl = req.query.url;
   let quality = req.query.quality;
@@ -55,34 +56,73 @@ app.get("/download", (req, res) => {
 
   console.log("Running command:", command);
 
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`yt-dlp error: ${stderr}`);
-      return res.status(500).json({ error: "Download failed" });
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+
+  const child = exec(command);
+
+  child.stdout.on("data", (data) => {
+    const progressMatch = data.match(/(\d+\.\d+)%/);
+    if (progressMatch) {
+      const progress = parseFloat(progressMatch[1]);
+      res.write(`data: ${JSON.stringify({ progress })}\n\n`);
     }
+  });
 
-    // Look for the downloaded file (yt-dlp will replace %(ext)s with the correct extension)
-    const downloadedFile = fs
-      .readdirSync(downloadsDir)
-      .find((file) => file.startsWith(baseFileName));
+  child.stderr.on("data", (data) => {
+    console.error(`yt-dlp error: ${data}`);
+  });
 
-    if (!downloadedFile) {
-      return res.status(500).json({ error: "File not found after download" });
-    }
+  child.on("close", (code) => {
+    if (code === 0) {
+      const downloadedFile = fs
+        .readdirSync(downloadsDir)
+        .find((file) => file.startsWith(baseFileName));
 
-    const finalFilePath = path.join(downloadsDir, downloadedFile);
-    console.log("Download complete, sending file:", finalFilePath);
+      downloadableFile = fs
+        .readdirSync(downloadsDir)
+        .find((file) => file.startsWith(baseFileName));
 
-    res.download(finalFilePath, downloadedFile, (err) => {
-      if (err) {
-        console.error("Error sending file:", err);
+      if (downloadedFile) {
+        res.write(
+          `data: ${JSON.stringify({ progress: 100, file: downloadedFile })}\n\n`
+        );
+        finalFilePath = path.join(downloadsDir, downloadedFile);
+        console.log("Download complete:", finalFilePath);
+      } else {
+        res.write(
+          `data: ${JSON.stringify({
+            error: "File not found after download",
+          })}\n\n`
+        );
       }
+    } else {
+      res.write(`data: ${JSON.stringify({ error: "Download failed" })}\n\n`);
+    }
+    res.end();
+  });
+});
 
-      // Delete file after sending
-      fs.unlink(finalFilePath, (unlinkErr) => {
-        if (unlinkErr) console.error("Error deleting file:", unlinkErr);
-        else console.log("File deleted successfully:", finalFilePath);
-      });
+app.get("/download-file", (req, res) => {
+  if (!finalFilePath || !downloadableFile) {
+    return res.status(404).json({ error: "File not available for download" });
+  }
+
+  res.download(finalFilePath, downloadableFile, (err) => {
+    if (err) {
+      console.error("Error sending file:", err);
+      return res.status(500).json({ error: "Failed to send file" });
+    }
+    // Delete file after sending
+    fs.unlink(finalFilePath, (unlinkErr) => {
+      if (unlinkErr) {
+        console.error("Error deleting file:", unlinkErr);
+      } else {
+        console.log("File deleted successfully:", finalFilePath);
+      }
     });
   });
 });

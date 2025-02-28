@@ -38,6 +38,7 @@ body {
   padding: 50px 20px;
   max-width: 700px;
   margin: 0 auto;
+  height: 600px;
 }
 
 /* Title & Subtitle */
@@ -64,8 +65,10 @@ body {
 /* Download Section */
 .download-section {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  padding-top: 120px;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -97,10 +100,12 @@ body {
 /* Options (Quality + Format) */
 .options {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   gap: 10px;
   margin-bottom: 30px;
+  width: 80%;
+  margin-left: 50px;
 }
 
 .options label {
@@ -147,6 +152,8 @@ body {
   line-height: 1.4;
   margin-bottom: 30px;
   color: #ccc;
+
+  margin-top: 210px;
 }
 
 /* Supported Platforms */
@@ -166,27 +173,6 @@ body {
   filter: grayscale(100%);
 }
 
-/* Example icons - replace with real icons if you like */
-.platform.windows {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/7328/7328746.png");
-}
-
-.platform.mac {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/179/179330.png");
-}
-
-.platform.linux {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/518/518713.png");
-}
-
-.platform.android {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/888/888839.png");
-}
-
-.platform.ios {
-  background-image: url("https://cdn-icons-png.flaticon.com/512/179/179309.png");
-}
-
 /* Footer */
 footer {
   text-align: center;
@@ -195,3 +181,31 @@ footer {
   color: #ccc;
   font-size: 0.85rem;
 }
+
+/* ...existing code... */
+#progressContainer {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+  margin-top: 10px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+#progressBar {
+  width: 0;
+  height: 20px;
+  background-color: #4caf50;
+  border-radius: 4px;
+  text-align: center;
+}
+
+#progressText {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #fb0e0e;
+}
+/* ...existing code... */

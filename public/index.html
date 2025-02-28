@@ -19,7 +19,6 @@
       <!-- <p class="norton-text">
         Scanned by <span>Norton<sup>TM</sup> Safe Web</span>
       </p> -->
-      <p class="subtitle">Paste your video link here</p>
 
       <!-- Input & Download Button -->
       <div class="download-section">
@@ -30,22 +29,28 @@
         />
         <button id="downloadBtn">Download</button>
       </div>
-
+      <div id="progressContainer" class="hidden">
+        <div id="progressBar"></div>
+        <span id="progressText">0%</span>
+      </div>
       <!-- Options (Quality + Format) -->
       <div class="options">
-        <label for="quality">Quality:</label>
-        <select id="quality">
-          <option value="1080p">1080p</option>
-          <option value="720p">720p</option>
-          <option value="480p">480p</option>
-          <option value="360p">360p</option>
-        </select>
-
-        <label for="format">Format:</label>
-        <select id="format">
-          <option value="mp4">MP4</option>
-          <option value="mp3">MP3</option>
-        </select>
+        <div>
+          <label for="quality">Quality:</label>
+          <select id="quality">
+            <option value="1080p">1080p</option>
+            <option value="720p">720p</option>
+            <option value="480p">480p</option>
+            <option value="360p">360p</option>
+          </select>
+        </div>
+        <div>
+          <label for="format">Format:</label>
+          <select id="format">
+            <option value="mp4">MP4</option>
+            <option value="mp3">MP3</option>
+          </select>
+        </div>
       </div>
 
       <!-- Loader -->
@@ -58,16 +63,6 @@
         and reliable way to download YouTube videos. With our user-friendly
         interface, accessing your favorite content has never been easier.
       </p>
-
-      <!-- Supported Platforms -->
-      <!-- <h2>Supported Platforms:</h2>
-      <div class="platforms">
-        <div class="platform windows"></div>
-        <div class="platform mac"></div>
-        <div class="platform linux"></div>
-        <div class="platform android"></div>
-        <div class="platform ios"></div>
-      </div> -->
     </div>
 
     <!-- Footer or Additional Info -->
