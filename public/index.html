@@ -21,7 +21,7 @@
       </p> -->
 
       <!-- Input & Download Button -->
-      <div class="download-section">
+      <div class="download-section" id="downloadSection">
         <input
           type="text"
           id="videoUrl"
@@ -29,9 +29,12 @@
         />
         <button id="downloadBtn">Download</button>
       </div>
-      <div id="progressContainer" class="hidden">
-        <div id="progressBar"></div>
-        <span id="progressText">0%</span>
+      <div class="cancelContainer hidden" id="cancelContainer">
+        <div id="progressContainer" class="hidden">
+          <div id="progressBar"></div>
+          <span id="progressText">0%</span>
+        </div>
+        <button id="cancelBtn">Cancel</button>
       </div>
       <!-- Options (Quality + Format) -->
       <div class="options">

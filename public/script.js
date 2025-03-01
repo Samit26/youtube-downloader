@@ -5,8 +5,11 @@ const qualitySelect = document.getElementById("quality");
 const formatSelect = document.getElementById("format");
 const loader = document.getElementById("loader");
 const progressContainer = document.getElementById("progressContainer");
+const cancelContainer = document.getElementById("cancelContainer");
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
+const downloadSection = document.getElementById("downloadSection");
+const cancelBtn = document.getElementById("cancelBtn");
 
 // Download logic
 downloadBtn.addEventListener("click", async () => {
@@ -21,7 +24,9 @@ downloadBtn.addEventListener("click", async () => {
 
   // Show loader
   loader.classList.remove("hidden");
+  cancelContainer.classList.remove("hidden");
   progressContainer.classList.remove("hidden");
+  downloadSection.classList.add("hidden");
 
   const eventSource = new EventSource(
     `/download?url=${encodeURIComponent(
@@ -37,6 +42,10 @@ downloadBtn.addEventListener("click", async () => {
       eventSource.close();
       loader.classList.add("hidden");
       progressContainer.classList.add("hidden");
+      cancelContainer.classList.add("hidden");
+      downloadSection.classList.remove("hidden");
+      progressBar.style.width = `0%`;
+      progressText.textContent = `0%`;
       return;
     }
 
@@ -51,9 +60,13 @@ downloadBtn.addEventListener("click", async () => {
       eventSource.close();
       loader.classList.add("hidden");
       progressContainer.classList.add("hidden");
+      cancelContainer.classList.add("hidden");
+      downloadSection.classList.remove("hidden");
+      progressBar.style.width = `0%`;
+      progressText.textContent = `0%`;
 
       const link = document.createElement("a");
-      link.href = `/download-file`;
+      link.href = `/download-file?downloadableFile=${data.file}&finalFilePath=${data.finalPath}`;
       link.download = data.file; // This now correctly uses the provided file name
       document.body.appendChild(link);
       link.click();
@@ -66,9 +79,22 @@ downloadBtn.addEventListener("click", async () => {
     eventSource.close();
     loader.classList.add("hidden");
     progressContainer.classList.add("hidden");
+    cancelContainer.classList.add("hidden");
+    downloadSection.classList.remove("hidden");
+    progressBar.style.width = `0%`;
+    progressText.textContent = `0%`;
   };
 });
 
+cancelBtn.addEventListener("click", () => {
+  fetch("/cancel");
+  loader.classList.add("hidden");
+  progressContainer.classList.add("hidden");
+  cancelContainer.classList.add("hidden");
+  downloadSection.classList.remove("hidden");
+  progressBar.style.width = `0%`;
+  progressText.textContent = `0%`;
+});
 //   try {
 //     // Make a fetch request to your Express backend
 //     const response = await fetch(

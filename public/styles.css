@@ -83,7 +83,7 @@ body {
 }
 
 .download-section button {
-  background: #ff0055;
+  background: #00ff04;
   color: #fff;
   font-size: 1rem;
   padding: 10px 30px;
@@ -93,8 +93,34 @@ body {
   transition: background 0.3s;
 }
 
-.download-section button:hover {
+#cancelBtn {
+  background: #ff0055;
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 130px;
+}
+
+#cancelBtn:hover {
   background: #ff3175;
+}
+
+.cancelContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.download-section button:hover {
+  background: #31ff95;
 }
 
 /* Options (Quality + Format) */
@@ -122,6 +148,8 @@ body {
 
 /* Loader */
 .loader {
+  position: absolute;
+  left: 48%;
   border: 6px solid #ccc;
   border-top: 6px solid #ff0055;
   border-radius: 50%;
@@ -132,6 +160,10 @@ body {
 }
 
 /* Hidden Class */
+#hidden {
+  display: none;
+}
+
 .hidden {
   display: none;
 }
@@ -184,28 +216,28 @@ footer {
 
 /* ...existing code... */
 #progressContainer {
-  width: 100%;
+  width: 60%;
   background-color: #f3f3f3;
   border-radius: 4px;
-  margin-top: 10px;
+  display: flex;
+  align-items: center;
   position: relative;
-  margin-bottom: 20px;
+  height: 35px;
+  /* justify-content: center; */
 }
 
 #progressBar {
   width: 0;
-  height: 20px;
-  background-color: #4caf50;
+  height: 35px;
+  background-color: #70ff76;
   border-radius: 4px;
   text-align: center;
 }
 
 #progressText {
   position: absolute;
-  top: 0;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
+  font-size: 16px;
   color: #fb0e0e;
 }
 /* ...existing code... */
