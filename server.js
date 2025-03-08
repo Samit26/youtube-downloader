@@ -6,7 +6,7 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 app.use(express.static("public"));
-
+const ytDlpPath = "/usr/local/bin/yt-dlp";
 // Track the active download process and the unique filename base.
 let downloadProcess = null;
 let currentDownloadBaseFile = null;
@@ -112,13 +112,13 @@ app.get("/download", (req, res) => {
   // Construct the command
   let command = "";
   if (format === "mp3") {
-    command = `yt-dlp -x --audio-format mp3 -o "${outputFilePath}" "${videoUrl}"`;
+    command = `${ytDlpPath} --cookies --audio-format mp3 -o "${outputFilePath}" "${videoUrl}"`;
   } else {
     const height = parseInt(quality, 10);
     const formatSelection = `bestvideo[height<=${height}]+bestaudio/best`;
     const cookiesPath = path.join(__dirname, "public", "cookies.txt");
     // On Windows, be sure to escape backslashes in the path if you do it manually.
-    command = `yt-dlp --cookies "${cookiesPath}" -f "${formatSelection}" -o "${outputFilePath}" "${videoUrl}"`;
+    command = `${ytDlpPath} --cookies "${cookiesPath}" -f "${formatSelection}" -o "${outputFilePath}" "${videoUrl}"`;
   }
 
   console.log("Running command:", command);
